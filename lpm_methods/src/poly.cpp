@@ -19,8 +19,9 @@ namespace poly {
 double char_coeff_help(VectorXd diagonal, VectorXd subDiagonal, uint k)
 {
     size_t n = diagonal.rows();
-    double S[n+1][3];
+    double** S = new double*[n+1];
     for (uint i = 0; i <= n; i++) {
+        S[i] = new double[3];
         S[i][0] = 1;
     }
     S[0][1] = 0;
@@ -42,8 +43,14 @@ double char_coeff_help(VectorXd diagonal, VectorXd subDiagonal, uint k)
             S[i][index] = prev + diff - correction;
         }
     }
+    double answer = S[n][k%3];
 
-    return S[n][k%3];
+    for (uint i = 0; i <= n; i++) {
+        delete[] S[i];
+    }
+    delete[] S;
+
+    return answer;
 }
 
 /**
@@ -112,8 +119,13 @@ double esp(VectorXd v, uint k)
     }
 
     size_t n = v.rows();
-    double S[n+1][2];
+
+    double** S = new double*[n+1];
+    for (uint i = 0; i <= n; i++) {
+        S[i] = new double[2];
+    }
     S[0][1] = 0;
+
     for (uint i = 1; i <= n; i++) {
         S[i][1] = S[i-1][1] + v(i-1);
     }
@@ -123,6 +135,10 @@ double esp(VectorXd v, uint k)
             S[i][j%2] = v(i-1) * S[i-1][(j-1)%2] + S[i-1][j%2];
         }
     }
+    for (uint i = 0; i <= n; i++) {
+        delete[] S[i];
+    }
+    delete[] S;
     return S[n][k%2];
 }
 

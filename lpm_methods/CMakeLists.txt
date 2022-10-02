@@ -20,6 +20,8 @@ if(SKBUILD)
   list(APPEND CMAKE_PREFIX_PATH "${_tmp_dir}")
 endif()
 
+add_compile_options(-Wall -Wextra -pedantic -Werror)
+
 # Now we can find pybind11
 find_package(pybind11 CONFIG REQUIRED)
 include_directories(${Eigen_INCLUDE_DIRS})

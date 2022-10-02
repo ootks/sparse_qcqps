@@ -105,14 +105,14 @@ VectorXd gradient(VectorXd x, uint k) {
     // Arrays storing the current and previous iterations of this method.
     double** prev = new double*[n]; 
     double** curr = new double*[n];
-    for (int i = 0; i < n; i++) {
+    for (uint i = 0; i < n; i++) {
         prev[i] = new double[k];
         curr[i] = new double[k];
     }
 
     // Initialize arrays
-    for (int i = 0; i < n; i++) {
-        for (int j = 1; j < k; j++) {
+    for (uint i = 0; i < n; i++) {
+        for (uint j = 1; j < k; j++) {
             prev[i][j] = 0;
         }
         prev[i][0] = 1;
@@ -146,7 +146,7 @@ VectorXd gradient(VectorXd x, uint k) {
     }
 
     // Clean up memory
-    for (int i = 0; i < n; i++) {
+    for (uint i = 0; i < n; i++) {
         delete[] prev[i];
         delete[] curr[i];
     }
@@ -167,9 +167,6 @@ VectorXd conditionals_eigen(VectorXd diagonal, VectorXd eigenvalues, MatrixXd ei
         grad;
     size_t n = eigenvalues.rows();
     VectorXd output(n);
-    for (int i = 0; i < diagonal.rows(); i++) {
-
-    }
     // Starting value.
     double val = esp(eigenvalues, k-1);
     // Then, we compute the results of this map for the Schur complements.
