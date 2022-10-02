@@ -1,0 +1,3 @@
+[submodule "lpm_methods/pybind11"]
+	path = lpm_methods/pybind11
+	url = https://github.com/pybind/pybind11
