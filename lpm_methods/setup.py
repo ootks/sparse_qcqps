@@ -14,7 +14,7 @@ from setuptools import find_packages
 
 setup(
     name="lpm_methods",
-    version="0.0.1",
+    version="0.0.2",
     description="A library for performing sparse regression and sparse PCA.",
     author="Kevin Shu",
     license="MIT",

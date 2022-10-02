@@ -94,6 +94,7 @@ void update_grad(VectorXd* grad, uint max, uint r, uint n, uint round, double va
 VectorXd gradient(VectorXd x, uint k) {
     size_t n = x.rows();
     VectorXd grad(n);
+
     if (k == 0) {
         for (uint i = 0; i < n; i++) {
             grad(i) = 0;
@@ -102,15 +103,22 @@ VectorXd gradient(VectorXd x, uint k) {
     }
 
     // Arrays storing the current and previous iterations of this method.
-    // TODO: Remove vla.
-    double prev[n][k] = {};
-    double curr[n][k];
+    double** prev = new double*[n]; 
+    double** curr = new double*[n];
+    for (int i = 0; i < n; i++) {
+        prev[i] = new double[k];
+        curr[i] = new double[k];
+    }
 
-    // Initialize arrays.
-    for(uint i = 0; i < n; i++) {
+    // Initialize arrays
+    for (int i = 0; i < n; i++) {
+        for (int j = 1; j < k; j++) {
+            prev[i][j] = 0;
+        }
         prev[i][0] = 1;
         curr[i][0] = 1;
     }
+
     // Dynamic Programming Step
     for (uint round = 0; round < nbits(n); round++) {
         uint mod = 2 << round;
@@ -131,14 +139,20 @@ VectorXd gradient(VectorXd x, uint k) {
             }
             update_grad(&grad, previous, r, n, round, curr[previous][k-1]);
         }
-        // Copy the previous thing
-        //TODO: Not all copies are necessary.
-        for (uint i = 0; i < n; i++) {
-            for (uint j = 0; j < k; j++) {
-                prev[i][j] = curr[i][j];
-            }
-        }
+        // Swap the previous and current arrays.
+        double** temp = prev;
+        prev = curr;
+        curr = temp;
     }
+
+    // Clean up memory
+    for (int i = 0; i < n; i++) {
+        delete[] prev[i];
+        delete[] curr[i];
+    }
+    delete[] prev;
+    delete[] curr;
+
     return grad;
 }
 
