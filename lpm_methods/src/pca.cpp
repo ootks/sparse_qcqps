@@ -3,6 +3,7 @@
 #include "conditionals.h"
 #include "poly.h"
 #include <math.h>
+#include <stdexcept>
 
 using Eigen::MatrixXd;
 using Eigen::ArrayXd;
@@ -131,7 +132,11 @@ vector<uint> pca(MatrixXd A, uint k) {
                 found_candidate = true;
             }
         }
-        assert(found_candidate);
+        if (!found_candidate) {
+            throw std::runtime_error("No good index found. "
+                                     "This is likely due to a numerical error."
+                                     );
+        }
         for (uint i = 0; i < dim; i++) {
             dets(i) *= matrix_eval_pts[i](best,best);
             schur_complement(&matrix_eval_pts[i], best);

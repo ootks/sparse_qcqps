@@ -135,11 +135,12 @@ double esp(VectorXd v, uint k)
             S[i][j%2] = v(i-1) * S[i-1][(j-1)%2] + S[i-1][j%2];
         }
     }
+    double answer = S[n][k%2];
     for (uint i = 0; i <= n; i++) {
         delete[] S[i];
     }
     delete[] S;
-    return S[n][k%2];
+    return answer;
 }
 
 /**

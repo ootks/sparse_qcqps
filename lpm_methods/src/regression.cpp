@@ -44,7 +44,11 @@ vector<uint> regression(MatrixXd A, VectorXd b, uint k) {
                 found_candidate = true;
             }
         }
-        assert(found_candidate);
+        if (!found_candidate) {
+            throw std::runtime_error("No good index found. "
+                                     "This is likely due to a numerical error."
+                                     );
+        }
         schur_complement(&X, best);
         schur_complement(&Z, best);
         output.push_back(best);
